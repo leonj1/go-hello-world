@@ -9,9 +9,13 @@ tasks:
 
 # List the ports to expose. Learn more: https://www.gitpod.io/docs/configure/workspaces/ports
 ports:
-  - name: Frontend
-    description: Port for localstack dynamodb admin
+  - name: Testing
+    description: python web server testing
     port: 8002
+    onOpen: open-preview
+  - name: DDB admin UI
+    description: dynamodb admin
+    port: 8001
     onOpen: open-preview
 
 # Learn more from ready-to-use templates: https://www.gitpod.io/docs/introduction/getting-started/quickstart
