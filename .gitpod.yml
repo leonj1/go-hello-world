@@ -17,5 +17,6 @@ ports:
     description: dynamodb admin
     port: 8001
     onOpen: open-preview
+    visibility: public
 
 # Learn more from ready-to-use templates: https://www.gitpod.io/docs/introduction/getting-started/quickstart
