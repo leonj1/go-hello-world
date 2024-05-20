@@ -1,0 +1,47 @@
+version: "3.8"
+
+services:
+  localstack:
+    container_name: localstack-services
+    image: localstack/localstack
+    hostname: localstack
+    networks:
+      - aws
+    ports:
+      - "127.0.0.1:4566:4566" # LocalStack Gateway
+      - "127.0.0.1:4510-4559:4510-4559" # external services port range
+    environment:
+      - SERVICES=secretsmanager,s3,dynamodb,dynamodbstreams
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+      - PORT_WEB_UI=8080
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - ENDPOINT_URL=${ENDPOINT_URL}
+      - DDB_TABLE_NAME=${DDB_TABLE_NAME}
+      - LOCAL_AWS_ACCESS_KEY_ID=${LOCAL_AWS_ACCESS_KEY_ID}
+      - LOCAL_AWS_SECRET_ACCESS_KEY=${LOCAL_AWS_SECRET_ACCESS_KEY}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+      - S3_BUCKET_NAME=${S3_BUCKET_NAME}
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "${LOCAL_HOST_PATH}/tools/localstack/:/etc/localstack/init/ready.d/"
+
+  dynamodb-admin:
+    image: artifactory.blackstone.com/docker/aaronshaf/dynamodb-admin
+    ports:
+      - "8001:8001"
+    environment:
+      - DYNAMO_ENDPOINT=http://localstack:4566
+      - AWS_REGION=${AWS_DEFAULT_REGION}
+      - LOCAL_AWS_ACCESS_KEY_ID=${LOCAL_AWS_ACCESS_KEY_ID}
+      - LOCAL_AWS_SECRET_ACCESS_KEY=${LOCAL_AWS_SECRET_ACCESS_KEY}
+    depends_on:
+      - localstack
+    networks:
+      - aws
+
+networks:
+  aws:
+    external: false
+    driver: bridge
+    name: aws
