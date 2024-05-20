@@ -27,7 +27,7 @@ services:
       - "${LOCAL_HOST_PATH}/tools/localstack/:/etc/localstack/init/ready.d/"
 
   dynamodb-admin:
-    image: artifactory.blackstone.com/docker/aaronshaf/dynamodb-admin
+    image: aaronshaf/dynamodb-admin
     ports:
       - "8001:8001"
     environment:
