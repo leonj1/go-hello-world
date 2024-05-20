@@ -1,0 +1,6 @@
+tasks:
+    - name: run back-end
+      openMode: split-left
+      command: |
+          go build -v
+          
